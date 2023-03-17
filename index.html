@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="filesaver.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="style.css" />
     <script
       src="https://kit.fontawesome.com/9899644c84.js"
@@ -35,7 +37,7 @@
   <body>
     <div class="df head-container">
       <div class="df heading">Chemical Supplies</div>
-      <div class = "icon-container">
+      <div class="icon-container">
         <div class="icon-div df">
           <!-- Modal -->
           <div
@@ -63,37 +65,62 @@
                 </div>
                 <div class="modal-body">
                   <div class="main-form-div">
-                    <div class = "df form-div">
-                      <div>Chemical Name : </div>
-                      <input type="text" id="cname" name="Chemical Name" value="">
+                    <div class="df form-div">
+                      <div>Chemical Name :</div>
+                      <input
+                        type="text"
+                        id="cname"
+                        name="Chemical Name"
+                        value=""
+                      />
                     </div>
-                    <div class = "df form-div">
-                      <div>Vendor : </div>
-                      <input type="text" id="vendor" name="Vendor" value="">
+                    <div class="df form-div">
+                      <div>Vendor :</div>
+                      <input type="text" id="vendor" name="Vendor" value="" />
                     </div>
-                    <div class = "df form-div">
-                      <div>Density : </div>
-                      <input type="number" id="density" name="Density" value="">
+                    <div class="df form-div">
+                      <div>Density :</div>
+                      <input
+                        type="number"
+                        id="density"
+                        name="Density"
+                        value=""
+                      />
                     </div>
-                    <div class = "df form-div">
-                      <div>Viscosity : </div>
-                      <input type="number" id="viscosity" name="Viscosity" value="">
+                    <div class="df form-div">
+                      <div>Viscosity :</div>
+                      <input
+                        type="number"
+                        id="viscosity"
+                        name="Viscosity"
+                        value=""
+                      />
                     </div>
-                    <div class = "df form-div">
-                      <div>Packaging : </div>
-                      <input type="text" id="packaging" name="Packaging" value="">
+                    <div class="df form-div">
+                      <div>Packaging :</div>
+                      <input
+                        type="text"
+                        id="packaging"
+                        name="Packaging"
+                        value=""
+                      />
                     </div>
-                    <div class = "df form-div">
-                      <div>Pack Size : </div>
-                      <input type="text" id="pack" name="Pack Size" value="">
+                    <div class="df form-div">
+                      <div>Pack Size :</div>
+                      <input type="text" id="pack" name="Pack Size" value="" />
                     </div>
-                    <div class = "df form-div">
-                      <div>Unit : </div>
-                      <input type="text" id="unit" name="Unit" value="">
+                    <div class="df form-div">
+                      <div>Unit :</div>
+                      <input type="text" id="unit" name="Unit" value="" />
                     </div>
-                    <div class = "df form-div">
-                      <div>Quantity : </div>
-                      <input type="text" id="quantity" name="Quantity" value="">
+                    <div class="df form-div">
+                      <div>Quantity :</div>
+                      <input
+                        type="text"
+                        id="quantity"
+                        name="Quantity"
+                        value=""
+                      />
                     </div>
                   </div>
                 </div>
@@ -105,48 +132,36 @@
                   >
                     Close
                   </button>
-                  <button id="save-btn" type="button" class="btn btn-primary" data-dismiss="modal">
+                  <button
+                    id="save-btn"
+                    type="button"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                  >
                     Save changes
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <i class="fa-solid fa-circle-plus circle"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
+          <i
+            class="fa-solid fa-circle-plus circle"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
           ></i>
           <i id="down" class="fa-solid fa-down-long"></i>
           <i id="up" class="fa-solid fa-up-long"></i>
           <i id="delete-icon" class="fa-solid fa-trash"></i>
-          
-          <i class="fa-regular fa-rotate-right"></i>
-          <i class="fa-regular fa-floppy-disk"></i>
-          
+          <i id="refresh" class="fa-solid fa-rotate"></i>
+
+          <i class="fa-regular fa-floppy-disk" onclick="downloadAsExcel()"></i>
         </div>
       </div>
     </div>
-    <table id="main-table" class="table table-bordered">
-      <!-- <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody> -->
-    </table>
+    <div class="table-container">
+      <table id="main-table" class="table table-bordered"></table>
+    </div>
+
     <script src="index.js"></script>
   </body>
 </html>

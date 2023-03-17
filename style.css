@@ -1,40 +1,39 @@
-*{
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    background-color: white;
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  background-color: white;
 }
 
 body {
   padding: 2rem;
 }
 
-
-
-.df,.dfc{
-    display: flex;
+.df,
+.dfc {
+  display: flex;
 }
 
 .dfc {
-    flex-direction: column;
+  flex-direction: column;
 }
 
-.icon-div{
+.icon-div {
   width: 100%;
   align-items: center;
   justify-content: space-evenly;
 }
 
-.icon-container{
+.icon-container {
   width: 50%;
 }
 
-.heading{
+.heading {
   font-size: 1.5rem;
   font-weight: 600;
 }
 
-.jcac{
+.jcac {
   justify-content: center;
   align-items: center;
 }
@@ -45,7 +44,7 @@ body {
   margin-bottom: 10px;
 }
 
-.circle{
+.circle {
   color: blue;
 }
 
@@ -53,21 +52,31 @@ body {
   body {
     padding: 1rem;
   }
-  .heading{
+  .heading {
     font-size: 1.25rem;
-    
   }
-  .icon-container{
+  .icon-container {
     width: 35%;
   }
 }
 
-.selected {
-  color:blue;
-  
+@media screen and (max-width: 400px) {
+  body {
+    padding: 0.5rem;
+  }
+  .heading {
+    font-size: 1rem;
+  }
+  .icon-container {
+    width: 55%;
+  }
 }
 
-i{
+.selected {
+  color: blue;
+}
+
+i {
   cursor: pointer;
 }
 
@@ -77,13 +86,10 @@ i{
 
 .green {
   color: green;
-  
 }
 
-.form-div{
-  
+.form-div {
   justify-content: space-between;
-  
 }
 
 .main-form-div {
@@ -91,8 +97,13 @@ i{
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-
 }
 
+.column {
+  cursor: pointer;
+}
 
-  
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}

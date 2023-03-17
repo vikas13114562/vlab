@@ -3,36 +3,52 @@ let data = [
     check: '<i class="fa-sharp fa-solid fa-check"></i>',
     "Chemical name": "1 Ammonium Persulfate",
     Vender: "LG Chem",
-    "Density (g / m^3)": "3525.92",
-    "Viscosity (m^2/s)": "60.63",
+    "Density (g / m^3)": 3525.92,
+    "Viscosity (m^2/s)": 30.63,
     Packaging: "Bag",
-    "Pack size": "100.00",
+    "Pack size": 100.0,
     Unit: "kg",
-    Quantity: "6495.18",
+    Quantity: 6495.18,
   },
   {
-    ckeck: '<i class="fa-sharp fa-solid fa-check"></i>',
+    check: '<i class="fa-sharp fa-solid fa-check"></i>',
     "Chemical name": "2 Ammonium Persulfate",
     Vender: "LG Chem",
-    "Density (g / m^3)": "3525.92",
-    "Viscosity (m^2/s)": "60.63",
-    Packaging: "Bag",
-    "Pack size": "100.00",
+    "Density (g / m^3)": 3525.92,
+    "Viscosity (m^2/s)": 60.63,
+    Packaging: "a",
+    "Pack size": 100.0,
     Unit: "kg",
-    Quantity: "6495.18",
+    Quantity: 6495.18,
   },
   {
-    ckeck: '<i class="fa-sharp fa-solid fa-check"></i>',
+    check: '<i class="fa-sharp fa-solid fa-check"></i>',
     "Chemical name": "3 Ammonium Persulfate",
     Vender: "LG Chem",
-    "Density (g / m^3)": "3525.92",
-    "Viscosity (m^2/s)": "60.63",
+    "Density (g / m^3)": 2525.92,
+    "Viscosity (m^2/s)": 60.63,
     Packaging: "Bag",
-    "Pack size": "100.00",
+    "Pack size": 100.0,
     Unit: "kg",
-    Quantity: "6495.18",
+    Quantity: 6495.18,
   },
 ];
+
+// function dynamicSort(property) {
+//   var sortOrder = 1;
+//   if (property[0] === "-") {
+//     sortOrder = -1;
+//     property = property.substr(1);
+//   }
+//   return function (a, b) {
+//     /* next line works with strings and numbers,
+//      * and you may want to customize it to your needs
+//      */
+//     var result =
+//       a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+//     return result * sortOrder;
+//   };
+// }
 
 let newArray;
 let isAllSelected = false;
@@ -41,9 +57,14 @@ const table = document.getElementById("main-table");
 const delete_icon = document.getElementById("delete-icon");
 const down_icon = document.getElementById("down");
 const up_icon = document.getElementById("up");
-const save_btn = document.getElementById('save-btn')
+const save_btn = document.getElementById("save-btn");
+const refresh = document.getElementById("refresh");
 
-save_btn.addEventListener('click',saveData)
+refresh.addEventListener("click", () => {
+  window.location.reload();
+});
+
+save_btn.addEventListener("click", saveData);
 
 delete_icon.addEventListener("click", handleDelete);
 down_icon.addEventListener("click", handleDownOrder);
@@ -56,18 +77,27 @@ function createColumn() {
 
   for (let i = 0; i < col.length; i++) {
     let td = document.createElement("td");
+    td.classList.add("column");
+    td.classList.add("change");
     if (i == 0) {
       td.innerHTML = '<i class="fa-sharp fa-solid fa-check"></i>';
+      td.id = "icon";
       td.addEventListener("click", selectAllRow);
     } else td.innerHTML = col[i];
     firstRow.append(td);
   }
   thead.append(firstRow);
   table.append(thead);
+  let allColumns = document.querySelectorAll(".column");
+  let tbody = document.getElementById("tbody");
+  allColumns.forEach((ele, ind) => {
+    ele.addEventListener("click", handleSort);
+  });
 }
 
 function creatBody(data) {
   let tbody = document.createElement("tbody");
+  tbody.id = "tbody";
 
   for (let i = 0; i < data.length; i++) {
     let bRow = document.createElement("tr");
@@ -90,13 +120,51 @@ function creatBody(data) {
 createColumn();
 creatBody(data);
 
+function handleSort() {
+  let temp = newArray ? [...newArray] : [...data];
+  let col_name = this.innerText;
+
+  this.classList.toggle("change");
+
+  if (
+    col_name == "Density (g / m^3)" ||
+    col_name == "Viscosity (m^2/s)" ||
+    col_name == "Pack size" ||
+    col_name == "Quantity"
+  ) {
+    if (this.classList.contains("change")) {
+      temp.sort((a, b) => b[col_name] - a[col_name]);
+    } else temp.sort((a, b) => a[col_name] - b[col_name]);
+    let tbody = document.getElementById("tbody");
+    tbody.outerHTML = "";
+    // createColumn();
+    creatBody(temp);
+  } else if (this.id != "icon") {
+    if (this.classList.contains("change")) {
+      temp.sort((a, b) =>
+        a[col_name].toLowerCase() > b[col_name].toLowerCase() ? 1 : -1
+      );
+    } else
+      temp.sort((a, b) =>
+        a[col_name].toLowerCase() < b[col_name].toLowerCase() ? 1 : -1
+      );
+
+    let tbody = document.getElementById("tbody");
+    tbody.outerHTML = "";
+    // createColumn();
+    creatBody(temp);
+  }
+  newArray = [...temp];
+}
+
 function handleClick(e) {
   let temp = newArray ? [...newArray] : [...data];
   let ele = this;
   ele.classList.toggle("selected");
   let list = document.querySelectorAll(".selected");
 
-  if(list && !delete_icon.classList.contains('red')) delete_icon.classList.add('red')
+  if (list && !delete_icon.classList.contains("red"))
+    delete_icon.classList.add("red");
 
   // if(list.length == 1 && list[0].id == 0 && up_icon.classList.contains('green')) {
   //   up_icon.classList.remove('green')
@@ -113,13 +181,14 @@ function handleClick(e) {
 
 function selectAllRow() {
   this.classList.toggle("selected");
-  if(this.classList.contains('selected')) {
-    delete_icon.classList.add('red')
-    if(up_icon.classList.contains('green')) up_icon.classList.remove('green')
-    if(down_icon.classList.contains('green')) down_icon.classList.remove('green')
-  }else {
-    if(delete_icon.classList.contains('red')) {
-      delete_icon.classList.remove('red')
+  if (this.classList.contains("selected")) {
+    delete_icon.classList.add("red");
+    if (up_icon.classList.contains("green")) up_icon.classList.remove("green");
+    if (down_icon.classList.contains("green"))
+      down_icon.classList.remove("green");
+  } else {
+    if (delete_icon.classList.contains("red")) {
+      delete_icon.classList.remove("red");
     }
   }
 
@@ -159,15 +228,23 @@ function handleDelete() {
     createColumn();
     creatBody(res);
   }
-  if(delete_icon.classList.contains('red')) {
-    delete_icon.classList.remove('red')
+  if (delete_icon.classList.contains("red")) {
+    delete_icon.classList.remove("red");
   }
 }
 
 function handleDownOrder() {
   let list = document.querySelectorAll(".selected");
   let temp = newArray ? [...newArray] : [...data];
-  
+
+  if (
+    list.length == 1 &&
+    list[0].id == temp.length - 2 &&
+    down_icon.classList.contains("green")
+  ) {
+    down_icon.classList.remove("green");
+  }
+
   if (
     !isAllSelected &&
     temp.length !== 1 &&
@@ -184,8 +261,8 @@ function handleDownOrder() {
     createColumn();
     creatBody(temp);
     let td = document.getElementById(ind + 1);
-    
-    if(!up_icon.classList.contains('green')) up_icon.classList.add('green')
+
+    if (!up_icon.classList.contains("green")) up_icon.classList.add("green");
     td.classList.add("selected");
     newArray = [...temp];
   }
@@ -194,6 +271,14 @@ function handleDownOrder() {
 function handleUpOrder() {
   let list = document.querySelectorAll(".selected");
   let temp = newArray ? [...newArray] : [...data];
+
+  if (
+    list.length == 1 &&
+    list[0].id == 1 &&
+    up_icon.classList.contains("green")
+  ) {
+    up_icon.classList.remove("green");
+  }
 
   if (
     !isAllSelected &&
@@ -214,34 +299,77 @@ function handleUpOrder() {
     td.classList.add("selected");
     newArray = [...temp];
   }
+  if (
+    list.length == 1 &&
+    list[0].id != temp.length - 2 &&
+    !down_icon.classList.contains("green")
+  ) {
+    down_icon.classList.add("green");
+  }
 }
 
 function saveData() {
-    let ch = document.getElementById('cname').value;
-    let ven = document.getElementById('vendor').value
-    let den = document.getElementById('density').value;
-    let vis = document.getElementById('viscosity').value
-    let pac = document.getElementById('packaging').value;
-    let package = document.getElementById('pack').value
-    let unit = document.getElementById('unit').value;
-    let quantity = document.getElementById('quantity').value
+  let ch = document.getElementById("cname").value;
+  let ven = document.getElementById("vendor").value;
+  let den = document.getElementById("density").value;
+  let vis = document.getElementById("viscosity").value;
+  let pac = document.getElementById("packaging").value;
+  let package = document.getElementById("pack").value;
+  let unit = document.getElementById("unit").value;
+  let quantity = document.getElementById("quantity").value;
 
-    let newEle = {
-        check: '<i class="fa-sharp fa-solid fa-check"></i>',
-        "Chemical name": ch,
-        Vender: ven,
-        "Density (g / m^3)": den,
-        "Viscosity (m^2/s)": vis,
-        Packaging: pac,
-        "Pack size": package,
-        Unit: unit,
-        Quantity: quantity,
-      }
+  let newEle = {
+    check: '<i class="fa-sharp fa-solid fa-check"></i>',
+    "Chemical name": ch,
+    Vender: ven,
+    "Density (g / m^3)": den,
+    "Viscosity (m^2/s)": vis,
+    Packaging: pac,
+    "Pack size": package,
+    Unit: unit,
+    Quantity: quantity,
+  };
 
-      let temp = newArray ? [...newArray,newEle] : [...data,newEle];
-      table.innerText = "";
+  let temp = newArray ? [...newArray, newEle] : [...data, newEle];
+  table.innerText = "";
 
-    createColumn();
-    creatBody(temp);
-    newArray = [...temp]
+  createColumn();
+  creatBody(temp);
+  newArray = [...temp];
+}
+
+const EXCEL_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const EXCEL_EXTENSION = ".xlsx";
+
+function downloadAsExcel() {
+  let temp = newArray ? [...newArray] : [...data];
+
+  let newData = [];
+
+  temp.forEach((ele) => {
+    let newEle = {};
+
+    delete ele.check;
+    newEle = { ...ele };
+    newData.push(newEle);
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(newData);
+  const workbook = {
+    Sheets: {
+      data: worksheet,
+    },
+
+    SheetNames: ["data"],
+  };
+
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+  saveAsExcel(excelBuffer, "myFile");
+}
+
+function saveAsExcel(buffer, filename) {
+  const data = new Blob([buffer], { type: EXCEL_TYPE });
+  saveAs(data, filename + "export" + new Date().getTime() + EXCEL_EXTENSION);
 }
